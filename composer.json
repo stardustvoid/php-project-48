@@ -1,0 +1,23 @@
+{
+  "name": "hexlet/code",
+  "description": "Generate the difference between two data structures",
+  "type": "library",
+  "license": "MIT",
+  "autoload": {
+    "psr-4": {
+      "Hexlet\\Code\\": "src/"
+    }
+  },
+  "authors": [
+    {
+      "name": "stardustvoid",
+      "email": "112036089+stardustvoid@users.noreply.github.com"
+    }
+  ],
+  "bin": [
+    "bin/gendiff"
+  ],
+  "require": {
+    "docopt/docopt": "^1.0"
+  }
+}
