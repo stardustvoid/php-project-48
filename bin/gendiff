@@ -11,6 +11,8 @@ if (file_exists($autoloadPath1)) {
     require_once $autoloadPath2;
 }
 
+use function Differ\Cli\differCli;
+
 $doc = <<<DOC
 Generate diff
 
@@ -26,7 +28,4 @@ Options:
 
 DOC;
 
-$args = \Docopt::handle($doc, array('version' => 'Differ 1.0'));
-// foreach ($args as $k => $v)
-    // echo $k . ': ' . json_encode($v) . PHP_EOL;
-
+differCli($doc);
