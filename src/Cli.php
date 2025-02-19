@@ -2,7 +2,7 @@
 
 namespace Differ\Cli;
 
-use function Differ\Parser\parse;
+use function Differ\Differ\genDiff;
 
 function differCli($doc)
 {
@@ -11,6 +11,5 @@ function differCli($doc)
     $fileOnePath = $args['<firstFile>'];
     $fileTwoPath = $args['<secondFile>'];
 
-    print_r(parse($fileOnePath));
-    print_r(parse($fileTwoPath));
+    print_r(genDiff($fileOnePath, $fileTwoPath));
 }

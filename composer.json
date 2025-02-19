@@ -9,7 +9,8 @@
     },
     "files": [
       "src/Cli.php",
-      "src/Parser.php"
+      "src/Parser.php",
+      "src/Differ.php"
     ]
   },
   "authors": [
