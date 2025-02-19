@@ -9,11 +9,18 @@ function toString($value)
     return trim(var_export($value, true), "'");
 }
 
+function getKeys(array $originalData, array $updatedData): array
+{
+    $uniqueKeys = array_unique(array_merge(array_keys($originalData), array_keys($updatedData)));
+
+    sort($uniqueKeys);
+
+    return $uniqueKeys;
+}
+
 function buildDiff(array $originalData, array $updatedData): array
 {
-    $allKeys = array_unique(array_merge(array_keys($originalData), array_keys($updatedData)));
-
-    sort($allKeys);
+    $keys = getKeys($originalData, $updatedData);
 
     return array_map(function ($key) use ($originalData, $updatedData) {
         $originalValue = $originalData[$key] ?? null;
@@ -47,7 +54,7 @@ function buildDiff(array $originalData, array $updatedData): array
             'key' => $key,
             'value' => $originalValue
         ];
-    }, $allKeys);
+    }, $keys);
 }
 
 function genDiffString(array $diff): string
