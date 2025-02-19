@@ -3,6 +3,10 @@
 
 [![install-lint-test](https://github.com/stardustvoid/php-project-48/actions/workflows/workflow.yml/badge.svg)](https://github.com/stardustvoid/php-project-48/actions/workflows/workflow.yml)
 
+[![Maintainability](https://api.codeclimate.com/v1/badges/45822eff26bef7d3d892/maintainability)](https://codeclimate.com/github/stardustvoid/php-project-48/maintainability)
+
+[![Test Coverage](https://api.codeclimate.com/v1/badges/45822eff26bef7d3d892/test_coverage)](https://codeclimate.com/github/stardustvoid/php-project-48/test_coverage)
+
 ## Differ
 
 Differ is a program that generates the difference between two data structures. Supported formats are JSON, YAML.
