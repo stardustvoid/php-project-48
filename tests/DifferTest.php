@@ -9,7 +9,7 @@ use function Differ\Differ\genDiff;
 class DifferTest extends TestCase
 {
     private $flatResult;
-    // private $result;
+    private $result;
 
     public function getFixtureFullPath($fixtureName)
     {
@@ -20,12 +20,13 @@ class DifferTest extends TestCase
     public function setUp(): void
     {
         $this->flatResult = $this->getFixtureFullPath('flat_result.txt');
+        $this->result = $this->getFixtureFullPath('result.txt');
     }
 
     public function testFlatJson()
     {
-        $json1 = $this->getFixtureFullPath('file1.json');
-        $json2 = $this->getFixtureFullPath('file2.json');
+        $json1 = $this->getFixtureFullPath('file1-flat.json');
+        $json2 = $this->getFixtureFullPath('file2-flat.json');
 
         $diff = genDiff($json1, $json2);
 
@@ -34,11 +35,30 @@ class DifferTest extends TestCase
 
     public function testFlatYaml()
     {
+        $yaml1 = $this->getFixtureFullPath('file1-flat.yaml');
+        $yaml2 = $this->getFixtureFullPath('file2-flat.yaml');
+
+        $diff = genDiff($yaml1, $yaml2);
+
+        $this->assertStringEqualsFile($this->flatResult, $diff);
+    }
+    public function testJson()
+    {
+        $json1 = $this->getFixtureFullPath('file1.json');
+        $json2 = $this->getFixtureFullPath('file2.json');
+
+        $diff = genDiff($json1, $json2);
+
+        $this->assertStringEqualsFile($this->result, $diff);
+    }
+
+    public function testYaml()
+    {
         $yaml1 = $this->getFixtureFullPath('file1.yaml');
         $yaml2 = $this->getFixtureFullPath('file2.yaml');
 
         $diff = genDiff($yaml1, $yaml2);
 
-        $this->assertStringEqualsFile($this->flatResult, $diff);
+        $this->assertStringEqualsFile($this->result, $diff);
     }
 }
