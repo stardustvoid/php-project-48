@@ -13,3 +13,6 @@ Differ is a program that generates the difference between two data structures. S
 
 ### GenDiff CLI: Example of comparing two flat JSON files
 [![asciicast](https://asciinema.org/a/704316.svg)](https://asciinema.org/a/704316)
+
+### GenDiff CLI: Example of comparing two flat YAML files
+[![asciicast](https://asciinema.org/a/704540.svg)](https://asciinema.org/a/704540)
