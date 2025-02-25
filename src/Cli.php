@@ -11,5 +11,7 @@ function differCli($doc)
     $fileOnePath = $args['<firstFile>'];
     $fileTwoPath = $args['<secondFile>'];
 
-    print_r(genDiff($fileOnePath, $fileTwoPath));
+    $format = $args['--format'];
+
+    print_r(genDiff($fileOnePath, $fileTwoPath, $format));
 }

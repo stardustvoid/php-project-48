@@ -10,7 +10,9 @@
     "files": [
       "src/Cli.php",
       "src/Parser.php",
-      "src/Differ.php"
+      "src/Differ.php",
+      "src/Formatters.php",
+      "src/formatters/Stylish.php"
     ]
   },
   "authors": [

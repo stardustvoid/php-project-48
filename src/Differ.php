@@ -3,89 +3,96 @@
 namespace Differ\Differ;
 
 use function Differ\Parser\parse;
+use function Differ\Formatters\format;
 
-function toString($value)
+function getKeys(array $oldData, array $newData): array
 {
-    return trim(var_export($value, true), "'");
-}
-
-function getKeys(array $originalData, array $updatedData): array
-{
-    $uniqueKeys = array_unique(array_merge(array_keys($originalData), array_keys($updatedData)));
+    $uniqueKeys = array_unique(array_merge(array_keys($oldData), array_keys($newData)));
 
     sort($uniqueKeys);
 
     return $uniqueKeys;
 }
 
-function buildDiff(array $originalData, array $updatedData): array
+function normalizeValue(mixed $value): mixed
 {
-    $keys = getKeys($originalData, $updatedData);
+    if (is_object($value)) {
+        return json_decode(json_encode($value), associative: true);
+    }
 
-    return array_map(function ($key) use ($originalData, $updatedData) {
-        $originalValue = $originalData[$key] ?? null;
-        $updatedValue = $updatedData[$key] ?? null;
-        $strOriginalValue = toString($originalValue);
-        $strUpdatedValue = toString($updatedValue);
-
-        if (!array_key_exists($key, $originalData)) {
-            return [
-                'type' => 'added',
-                'key' => $key,
-                'value' => $strUpdatedValue
-            ];
-        } elseif (!array_key_exists($key, $updatedData)) {
-            return [
-                'type' => 'removed',
-                'key' => $key,
-                'value' => $strOriginalValue
-            ];
-        } elseif ($originalValue !== $updatedValue) {
-            return [
-                'type' => 'updated',
-                'key' => $key,
-                'originalValue' => $strOriginalValue,
-                'updatedValue' => $strUpdatedValue
-            ];
-        }
-
-        return [
-            'type' => 'unchanged',
-            'key' => $key,
-            'value' => $originalValue
-        ];
-    }, $keys);
+    return $value;
 }
 
-function genDiffString(array $diff): string
+function getNodeType(string $key, array $oldData, array $newData): string
 {
-    $indent = '  ';
+    if (!array_key_exists($key, $oldData)) {
+        return 'added';
+    } elseif (!array_key_exists($key, $newData)) {
+        return 'removed';
+    }
 
-    $lines = array_reduce($diff, function ($acc, $item) use ($indent) {
-        $type = $item['type'];
-        $key = $item['key'];
+    $oldValue = $oldData[$key];
+    $newValue = $newData[$key];
 
-        $line = match ($type) {
-            'unchanged' => "{$indent}  {$key}: {$item['value']}",
-            'added' => "{$indent}+ {$key}: {$item['value']}",
-            'removed' => "{$indent}- {$key}: {$item['value']}",
-            'updated' => "{$indent}- {$key}: {$item['originalValue']}\n{$indent}+ {$key}: {$item['updatedValue']}"
-        };
+    if (is_object($oldValue) && is_object($newValue)) {
+        return 'nested';
+    } elseif ($oldValue !== $newValue) {
+        return 'updated';
+    }
 
-        return [...$acc, $line];
-    }, []);
-
-    $result = ['{', ...$lines, '}'];
-
-    return implode("\n", $result);
+    return 'unchanged';
 }
 
-function genDiff(string $pathToFile1, string $pathToFile2): string
+function buildDiffNode(string $key, array $oldData, array $newData): array
 {
-    $originalData = (array) parse($pathToFile1);
-    $updatedData = (array) parse($pathToFile2);
+    $oldValue = $oldData[$key] ?? null;
+    $newValue = $newData[$key] ?? null;
+    $normalizedOldValue = normalizeValue($oldValue);
+    $normalizedNewValue = normalizeValue($newValue);
 
-    $diff = buildDiff($originalData, $updatedData);
+    $nodeType = getNodeType($key, $oldData, $newData);
 
-    return genDiffString($diff);
+    $node = [
+        'type' => $nodeType,
+        'key' => $key
+    ];
+
+    $nodeValue = match ($nodeType) {
+        'added' => [
+            'value' => $normalizedNewValue
+        ],
+        'unchanged', 'removed' => [
+            'value' => $normalizedOldValue
+        ],
+        'nested' => [
+            'children' => buildDiff($oldValue, $newValue)
+        ],
+        'updated' => [
+            'oldValue' => $normalizedOldValue,
+            'newValue' => $normalizedNewValue
+        ],
+        default => throw new \Exception('Wrong node type')
+    };
+
+    return [...$node, ...$nodeValue];
+}
+
+function buildDiff(object $oldDataObj, object $newDataObj): array
+{
+    $oldData = (array) $oldDataObj;
+    $newData = (array) $newDataObj;
+
+    $keys = getKeys($oldData, $newData);
+
+    return array_map(fn($key) => buildDiffNode($key, $oldData, $newData), $keys);
+}
+
+function genDiff(string $pathToFile1, string $pathToFile2, string $format = 'stylish'): string
+{
+    $oldDataObj = parse($pathToFile1);
+    $newDataObj = parse($pathToFile2);
+
+    $diff = buildDiff($oldDataObj, $newDataObj);
+
+    return format($diff, $format);
 }
