@@ -13,5 +13,7 @@ function differCli(string $doc): void
 
     $format = $args['--format'];
 
-    print_r(genDiff($fileOnePath, $fileTwoPath, $format));
+    $diff = genDiff($fileOnePath, $fileTwoPath, $format);
+
+    print_r($diff);
 }

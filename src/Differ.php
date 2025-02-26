@@ -19,6 +19,11 @@ function normalizeValue(mixed $value): mixed
 {
     if (is_object($value)) {
         $jsonValue = json_encode($value);
+
+        if (!$jsonValue) {
+            throw new \Exception('Wrong object value');
+        }
+
         return json_decode($jsonValue, associative: true);
     }
 

@@ -31,7 +31,7 @@ function parse(string $filePath): object
     $extension = pathinfo($fileFullPath, PATHINFO_EXTENSION);
     $content = file_get_contents($fileFullPath);
 
-    if (!$content) {
+    if (!$content || $content === '') {
         throw new \Exception('File is empty');
     }
 
