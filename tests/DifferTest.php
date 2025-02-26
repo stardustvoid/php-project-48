@@ -8,8 +8,8 @@ use function Differ\Differ\genDiff;
 
 class DifferTest extends TestCase
 {
-    private $flatResult;
-    private $result;
+    private $resultStylish;
+    private $resultPlain;
 
     public function getFixtureFullPath($fixtureName)
     {
@@ -19,46 +19,31 @@ class DifferTest extends TestCase
 
     public function setUp(): void
     {
-        $this->flatResult = $this->getFixtureFullPath('flat_result.txt');
-        $this->result = $this->getFixtureFullPath('result.txt');
+        $this->resultStylish = $this->getFixtureFullPath('result-stylish.txt');
+        $this->resultPlain = $this->getFixtureFullPath('result-plain.txt');
     }
 
-    public function testFlatJson()
-    {
-        $json1 = $this->getFixtureFullPath('file1-flat.json');
-        $json2 = $this->getFixtureFullPath('file2-flat.json');
-
-        $diff = genDiff($json1, $json2);
-
-        $this->assertStringEqualsFile($this->flatResult, $diff);
-    }
-
-    public function testFlatYaml()
-    {
-        $yaml1 = $this->getFixtureFullPath('file1-flat.yaml');
-        $yaml2 = $this->getFixtureFullPath('file2-flat.yaml');
-
-        $diff = genDiff($yaml1, $yaml2);
-
-        $this->assertStringEqualsFile($this->flatResult, $diff);
-    }
-    public function testJson()
+    public function testJson(): void
     {
         $json1 = $this->getFixtureFullPath('file1.json');
         $json2 = $this->getFixtureFullPath('file2.json');
 
-        $diff = genDiff($json1, $json2);
+        $diffStylish = genDiff($json1, $json2);
+        $diffPlain = genDiff($json1, $json2, 'plain');
 
-        $this->assertStringEqualsFile($this->result, $diff);
+        $this->assertStringEqualsFile($this->resultStylish, $diffStylish);
+        $this->assertStringEqualsFile($this->resultPlain, $diffPlain);
     }
 
-    public function testYaml()
+    public function testYaml(): void
     {
         $yaml1 = $this->getFixtureFullPath('file1.yaml');
         $yaml2 = $this->getFixtureFullPath('file2.yaml');
 
-        $diff = genDiff($yaml1, $yaml2);
+        $diffStylish = genDiff($yaml1, $yaml2);
+        $diffPlain = genDiff($yaml1, $yaml2, 'plain');
 
-        $this->assertStringEqualsFile($this->result, $diff);
+        $this->assertStringEqualsFile($this->resultStylish, $diffStylish);
+        $this->assertStringEqualsFile($this->resultPlain, $diffPlain);
     }
 }
