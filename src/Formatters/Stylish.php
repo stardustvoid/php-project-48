@@ -85,7 +85,7 @@ function buildString(array $node, int $depth): array
         default => throw new \Exception('Wrong node type')
     };
 
-    return array_map(fn($ln) => rtrim($ln), $line);
+    return $line;
 }
 
 function formatStylish(array $diff, int $depth = 1): string
