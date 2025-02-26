@@ -4,7 +4,7 @@ namespace Differ\Cli;
 
 use function Differ\Differ\genDiff;
 
-function differCli(string $doc): void
+function differCli(string $doc): string
 {
     $args = \Docopt::handle($doc, array('version' => 'Differ 1.0'));
 
@@ -13,7 +13,5 @@ function differCli(string $doc): void
 
     $format = $args['--format'];
 
-    $diff = genDiff($fileOnePath, $fileTwoPath, $format);
-
-    print_r($diff);
+    return genDiff($fileOnePath, $fileTwoPath, $format);
 }

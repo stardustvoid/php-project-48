@@ -28,4 +28,4 @@ Options:
 
 DOC;
 
-differCli($doc);
+echo differCli($doc);

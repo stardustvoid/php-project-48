@@ -20,7 +20,7 @@ function normalizeValue(mixed $value): mixed
     if (is_object($value)) {
         $jsonValue = json_encode($value);
 
-        if (!$jsonValue) {
+        if ($jsonValue === false) {
             throw new \Exception('Wrong object value');
         }
 
