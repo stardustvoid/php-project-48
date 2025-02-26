@@ -2,7 +2,7 @@
 
 namespace Differ\Formatters\Stylish;
 
-function toString($value)
+function toString($value): string
 {
     if (is_null($value)) {
         return 'null';
@@ -51,7 +51,7 @@ function formatValue(mixed $value, int $depth): string
     return implode("\n", $result);
 }
 
-function buildNodeString(array $node, int $depth): array
+function buildString(array $node, int $depth): array
 {
     $type = $node['type'];
     $key = $node['key'];
@@ -91,7 +91,7 @@ function buildNodeString(array $node, int $depth): array
 function formatStylish(array $diff, int $depth = 1): string
 {
     $lines = array_reduce($diff, function ($acc, $node) use ($depth) {
-        $line = buildNodeString($node, $depth);
+        $line = buildString($node, $depth);
         return [...$acc, ...$line];
     }, []);
 

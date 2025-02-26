@@ -3,11 +3,7 @@
 namespace Differ\Formatters;
 
 use function Differ\Formatters\Stylish\formatStylish;
-
-function formatPlain(array $diff): string
-{
-    return formatStylish($diff);
-}
+use function Differ\Formatters\Plain\formatPlain;
 
 function format(array $diff, string $formatter): string
 {
