@@ -2,7 +2,7 @@
 
 namespace Differ\Formatters\Stylish;
 
-function toString($value): string
+function toString(mixed $value): string
 {
     if (is_null($value)) {
         return 'null';

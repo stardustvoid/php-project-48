@@ -4,20 +4,22 @@ namespace Differ\Differ;
 
 use function Differ\Parser\parse;
 use function Differ\Formatters\format;
+use function Functional\sort;
 
 function getKeys(array $oldData, array $newData): array
 {
     $uniqueKeys = array_unique(array_merge(array_keys($oldData), array_keys($newData)));
 
-    sort($uniqueKeys);
+    $sortedKeys = sort($uniqueKeys, fn($left, $right) => strcmp($left, $right));
 
-    return $uniqueKeys;
+    return $sortedKeys;
 }
 
 function normalizeValue(mixed $value): mixed
 {
     if (is_object($value)) {
-        return json_decode(json_encode($value), associative: true);
+        $jsonValue = json_encode($value);
+        return json_decode($jsonValue, associative: true);
     }
 
     return $value;

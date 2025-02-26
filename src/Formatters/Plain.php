@@ -2,7 +2,7 @@
 
 namespace Differ\Formatters\Plain;
 
-function toStringWithQuotes($value): string
+function toStringWithQuotes(mixed $value): string
 {
     if (is_null($value)) {
         return 'null';

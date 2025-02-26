@@ -4,7 +4,7 @@ namespace Differ\Cli;
 
 use function Differ\Differ\genDiff;
 
-function differCli($doc)
+function differCli(string $doc): void
 {
     $args = \Docopt::handle($doc, array('version' => 'Differ 1.0'));
 
