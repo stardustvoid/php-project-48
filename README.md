@@ -11,6 +11,24 @@
 
 Differ is a program that generates the difference between two data structures. Supported formats are JSON, YAML.
 
+Differ can be used as a library or from command line.
+
+## Prerequisites
+
+- Linux, Macos, WSL
+- PHP >=8.2
+- Xdebug
+- Make
+- Git
+
+## Installation
+
+```
+git clone https://github.com/stardustvoid/php-project-48.git
+cd php-project-48
+make install
+```
+
 ### Example of comparing two flat JSON files
 [![asciicast](https://asciinema.org/a/704316.svg)](https://asciinema.org/a/704316)
 
@@ -19,3 +37,6 @@ Differ is a program that generates the difference between two data structures. S
 
 ### Example of comparing two JSON files
 [![asciicast](https://asciinema.org/a/705281.svg)](https://asciinema.org/a/705281)
+
+### Example of comparison in plain format
+[![asciicast](https://asciinema.org/a/705492.svg)](https://asciinema.org/a/705492)
