@@ -10,6 +10,7 @@ class DifferTest extends TestCase
 {
     private $resultStylish;
     private $resultPlain;
+    private $resultJson;
 
     public function getFixtureFullPath($fixtureName)
     {
@@ -21,6 +22,7 @@ class DifferTest extends TestCase
     {
         $this->resultStylish = $this->getFixtureFullPath('result-stylish.txt');
         $this->resultPlain = $this->getFixtureFullPath('result-plain.txt');
+        $this->resultJson = $this->getFixtureFullPath('result-json.txt');
     }
 
     public function testJson(): void
@@ -30,9 +32,11 @@ class DifferTest extends TestCase
 
         $diffStylish = genDiff($json1, $json2);
         $diffPlain = genDiff($json1, $json2, 'plain');
+        $diffJson = genDiff($json1, $json2, 'json');
 
         $this->assertStringEqualsFile($this->resultStylish, $diffStylish);
         $this->assertStringEqualsFile($this->resultPlain, $diffPlain);
+        $this->assertStringEqualsFile($this->resultJson, $diffJson);
     }
 
     public function testYaml(): void
@@ -42,8 +46,10 @@ class DifferTest extends TestCase
 
         $diffStylish = genDiff($yaml1, $yaml2);
         $diffPlain = genDiff($yaml1, $yaml2, 'plain');
+        $diffJson = genDiff($yaml1, $yaml2, 'json');
 
         $this->assertStringEqualsFile($this->resultStylish, $diffStylish);
         $this->assertStringEqualsFile($this->resultPlain, $diffPlain);
+        $this->assertStringEqualsFile($this->resultJson, $diffJson);
     }
 }

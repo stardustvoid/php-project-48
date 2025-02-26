@@ -10,6 +10,7 @@ function format(array $diff, string $formatter): string
     return match ($formatter) {
         'stylish' => formatStylish($diff),
         'plain' => formatPlain($diff),
+        'json' => json_encode($diff),
         default => throw new \Exception('Wrong format name')
     };
 }

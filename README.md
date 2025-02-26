@@ -40,3 +40,6 @@ make install
 
 ### Example of comparison in plain format
 [![asciicast](https://asciinema.org/a/705492.svg)](https://asciinema.org/a/705492)
+
+### Example of comparison in JSON format
+[![asciicast](https://asciinema.org/a/705505.svg)](https://asciinema.org/a/705505)
