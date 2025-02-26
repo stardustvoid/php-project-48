@@ -59,12 +59,13 @@ function buildString(array $node, int $depth): array
     $formattedValue = match ($type) {
         'nested' => formatStylish($node['children'], $depth + 1),
         'unchanged', 'added', 'removed' => formatValue($node['value'], $depth + 1),
-        'updated' => [
-            'old' => formatValue($node['oldValue'], $depth + 1),
-            'new' => formatValue($node['newValue'], $depth + 1)
-        ],
-        default => throw new \Exception('Wrong node type')
+        default => ''
     };
+
+    if ($type === 'updated') {
+        $oldValue = formatValue($node['oldValue'], $depth + 1);
+        $newValue = formatValue($node['newValue'], $depth + 1);
+    }
 
     $indent = makeIndent($depth);
 
@@ -79,8 +80,8 @@ function buildString(array $node, int $depth): array
             "{$indent}- {$key}: {$formattedValue}"
         ],
         'updated' => [
-            "{$indent}- {$key}: {$formattedValue['old']}",
-            "{$indent}+ {$key}: {$formattedValue['new']}"
+            "{$indent}- {$key}: {$oldValue}",
+            "{$indent}+ {$key}: {$newValue}"
         ],
         default => throw new \Exception('Wrong node type')
     };
